@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 
 body {
     background-color: rgb(146, 147, 199);
@@ -12,3 +13,19 @@ h2 {
     color: rgb(219, 43, 43);
 }
 
+=======
+
+body {
+    background-color: rgb(146, 147, 199);
+    font-family: Arial;
+}
+
+h1 {
+    color: rgb(11, 11, 80);
+}
+
+h2 {
+    color: rgb(219, 43, 43);
+}
+
+>>>>>>> e48db42 (Add attendance database schema)
