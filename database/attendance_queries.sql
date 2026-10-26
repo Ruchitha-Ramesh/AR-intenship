@@ -46,3 +46,112 @@ GROUP BY status;
 -- for the current date.
 -- INSERT INTO attendance (student_id, status)
 -- VALUES (2, 'present');
+
+
+-- =========================================
+-- 1. USERS TABLE
+-- =========================================
+
+CREATE TABLE IF NOT EXISTS public.users (
+    user_id SERIAL PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    email VARCHAR(150) NOT NULL UNIQUE,
+    password_hash TEXT NOT NULL,
+    role VARCHAR(20) NOT NULL
+        CHECK (role IN ('admin', 'student'))
+);
+
+-- =========================================
+-- 2. STUDENT DETAILS TABLE
+-- =========================================
+
+CREATE TABLE IF NOT EXISTS public.student_details (
+    student_id SERIAL PRIMARY KEY,
+    user_id INTEGER NOT NULL UNIQUE,
+    first_name VARCHAR(100) NOT NULL,
+    last_name VARCHAR(100),
+    contact VARCHAR(15),
+    course VARCHAR(100) NOT NULL,
+    enrollment_date DATE NOT NULL DEFAULT CURRENT_DATE,
+    duration INTEGER NOT NULL,
+    CONSTRAINT fk_student_user
+        FOREIGN KEY (user_id)
+        REFERENCES public.users(user_id)
+);
+
+-- =========================================
+-- 3. ADMIN DETAILS TABLE
+-- =========================================
+
+CREATE TABLE IF NOT EXISTS public.admin_details (
+    admin_id SERIAL PRIMARY KEY,
+    user_id INTEGER NOT NULL UNIQUE,
+    first_name VARCHAR(100) NOT NULL,
+    last_name VARCHAR(100),
+    contact VARCHAR(15),
+    designation VARCHAR(100) NOT NULL,
+    date_of_join DATE NOT NULL DEFAULT CURRENT_DATE,
+    CONSTRAINT fk_admin_user
+        FOREIGN KEY (user_id)
+        REFERENCES public.users(user_id)
+);
+
+-- =========================================
+-- 4. SAMPLE USER ACCOUNTS
+-- Demo password hashes are placeholders,
+-- not usable login passwords.
+-- =========================================
+
+INSERT INTO public.users (name, email, password_hash, role)
+VALUES
+('Rahul Kumar', 'rahul.demo@example.com', 'DEMO_ONLY', 'student'),
+('Priya Sharma', 'priya.demo@example.com', 'DEMO_ONLY', 'student'),
+('Arun Kumar', 'arun.admin.demo@example.com', 'DEMO_ONLY', 'admin'),
+('Meena Devi', 'meena.admin.demo@example.com', 'DEMO_ONLY', 'admin')
+ON CONFLICT (email) DO NOTHING;
+
+-- =========================================
+-- 5. INSERT STUDENT DETAILS
+-- IDs are looked up from users by email.
+-- =========================================
+
+INSERT INTO public.student_details
+(user_id, first_name, last_name, contact, course, enrollment_date, duration)
+SELECT u.user_id, d.first_name, d.last_name, d.contact,
+       d.course, d.enrollment_date, d.duration
+FROM (
+    VALUES
+    ('rahul.demo@example.com', 'Rahul', 'Kumar',
+     '9876543210', 'BCA', DATE '2026-06-15', 3),
+    ('priya.demo@example.com', 'Priya', 'Sharma',
+     '9876543211', 'BCA', DATE '2026-06-20', 3)
+) AS d(email, first_name, last_name, contact, course, enrollment_date, duration)
+JOIN public.users u ON u.email = d.email AND u.role = 'student'
+ON CONFLICT (user_id) DO NOTHING;
+
+-- =========================================
+-- 6. INSERT ADMIN DETAILS
+-- IDs are looked up from users by email.
+-- =========================================
+
+INSERT INTO public.admin_details
+(user_id, first_name, last_name, contact, designation, date_of_join)
+SELECT u.user_id, d.first_name, d.last_name, d.contact,
+       d.designation, d.date_of_join
+FROM (
+    VALUES
+    ('arun.admin.demo@example.com', 'Arun', 'Kumar',
+     '9876543212', 'System Administrator', DATE '2025-01-10'),
+    ('meena.admin.demo@example.com', 'Meena', 'Devi',
+     '9876543213', 'HR Administrator', DATE '2025-03-15')
+) AS d(email, first_name, last_name, contact, designation, date_of_join)
+JOIN public.users u ON u.email = d.email AND u.role = 'admin'
+ON CONFLICT (user_id) DO NOTHING;
+
+-- =========================================
+-- 7. VERIFY INSERTED RECORDS
+-- =========================================
+
+SELECT * FROM public.users ORDER BY user_id;
+SELECT * FROM public.student_details ORDER BY student_id;
+SELECT * FROM public.admin_details ORDER BY admin_id;
