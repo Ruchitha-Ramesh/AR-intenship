@@ -1,0 +1,102 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AttendEase Login</title>
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+</head>
+
+<body class="min-h-screen flex items-center justify-center bg-indigo-50 p-5">
+
+  <div class="w-full max-w-sm rounded-2xl bg-white p-8 shadow-xl">
+
+    <div class="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-indigo-600 text-3xl font-bold text-white">
+      ✓
+    </div>
+
+    <h1 class="text-center text-2xl font-bold text-gray-800">AttendEase</h1>
+    <p class="mb-8 mt-2 text-center text-sm text-gray-500">
+      Your attendance, simplified.
+    </p>
+
+    <form id="loginForm">
+      <label class="mb-2 block text-sm font-semibold text-gray-700">
+        Student / Employee ID
+      </label>
+      <input id="user" type="text" placeholder="Enter your ID"
+        class="mb-5 w-full rounded-lg border border-gray-300 px-4 py-3 outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100">
+
+      <label class="mb-2 block text-sm font-semibold text-gray-700">
+        Password
+      </label>
+
+      <div class="flex gap-2">
+        <input id="pass" type="password" placeholder="Enter password"
+          class="min-w-0 flex-1 rounded-lg border border-gray-300 px-4 py-3 outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100">
+
+        <button type="button" id="toggle"
+          class="rounded-lg bg-indigo-50 px-3 text-sm font-medium text-indigo-700">
+          Show
+        </button>
+      </div>
+
+      <div class="mb-5 mt-2 text-right">
+        <button type="button" id="forgot"
+          class="text-sm font-medium text-indigo-600 hover:text-indigo-800 hover:underline">
+          Forgot password?
+        </button>
+      </div>
+
+      <button type="submit"
+        class="w-full rounded-lg bg-indigo-600 py-3 font-semibold text-white transition hover:bg-indigo-700">
+        Login
+      </button>
+
+      <p id="message" role="status"
+        class="mt-4 text-center text-sm text-red-600"></p>
+    </form>
+
+    <p class="mt-6 text-center text-xs text-gray-400">
+      Secure Attendance Management
+    </p>
+  </div>
+
+  <script>
+    const form = document.getElementById("loginForm");
+    const pass = document.getElementById("pass");
+    const toggle = document.getElementById("toggle");
+    const message = document.getElementById("message");
+
+    toggle.onclick = function () {
+      pass.type = pass.type === "password" ? "text" : "password";
+      toggle.textContent = pass.type === "password" ? "Show" : "Hide";
+    };
+
+    form.onsubmit = function (e) {
+      e.preventDefault();
+
+      const user = document.getElementById("user").value.trim();
+
+      if (!user || !pass.value) {
+        message.className = "mt-4 text-center text-sm text-red-600";
+        message.textContent = "Please fill in both fields.";
+      } else {
+        message.className = "mt-4 text-center text-sm text-indigo-600";
+        message.textContent = "Login UI ready. Authentication is not connected yet.";
+      }
+    };
+
+    document.getElementById("forgot").onclick = function () {
+      const user = document.getElementById("user").value.trim();
+
+      message.className = "mt-4 text-center text-sm text-indigo-600";
+      message.textContent = user
+        ? "Password recovery will be available once connected to the backend."
+        : "Please enter your Student / Employee ID first.";
+    };
+  </script>
+
+</body>
+</html>

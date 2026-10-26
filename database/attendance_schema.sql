@@ -2,7 +2,7 @@
 -- PostgreSQL database dump
 --
 
-\restrict TYz2CgH22ODoFQIQ0dSAEsHzoPVmqNujKXPPfEYksWnJ4tXeMDiUASu22JiLZVc
+\restrict wqDT5gOFix0jnbS19jTdjPUd02Rb5pMuxQrVjEkt7RcwLWwE7QL0ze1lrLjQ5jo
 
 -- Dumped from database version 18.6
 -- Dumped by pg_dump version 18.6
@@ -157,5 +157,5 @@ ALTER TABLE ONLY public.attendance
 -- PostgreSQL database dump complete
 --
 
-\unrestrict TYz2CgH22ODoFQIQ0dSAEsHzoPVmqNujKXPPfEYksWnJ4tXeMDiUASu22JiLZVc
+\unrestrict wqDT5gOFix0jnbS19jTdjPUd02Rb5pMuxQrVjEkt7RcwLWwE7QL0ze1lrLjQ5jo
 
