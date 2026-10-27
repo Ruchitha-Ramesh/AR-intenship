@@ -155,3 +155,63 @@ ON CONFLICT (user_id) DO NOTHING;
 SELECT * FROM public.users ORDER BY user_id;
 SELECT * FROM public.student_details ORDER BY student_id;
 SELECT * FROM public.admin_details ORDER BY admin_id;
+
+
+-- ============================================
+-- ATTENDANCE TRACKING SYSTEM
+-- PUBLIC HOLIDAYS DATABASE
+-- Database: attendance_db
+-- ============================================
+
+-- 1. Create the public holidays table
+
+CREATE TABLE IF NOT EXISTS public_holidays (
+    holiday_id SERIAL PRIMARY KEY,
+    holiday_name VARCHAR(100) NOT NULL,
+    holiday_date DATE NOT NULL UNIQUE,
+    description TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- 2. Insert Indian public holidays and festivals for 2026
+
+INSERT INTO public_holidays
+    (holiday_name, holiday_date, description)
+VALUES
+    ('New Year', '2026-01-01', 'New Year celebration'),
+    ('Pongal', '2026-01-15', 'Tamil harvest festival'),
+    ('Thiruvalluvar Day', '2026-01-16', 'Tamil cultural observance'),
+    ('Uzhavar Thirunal', '2026-01-17', 'Tamil farmers festival'),
+    ('Republic Day', '2026-01-26', 'National holiday'),
+    ('Maha Shivaratri', '2026-02-15', 'Hindu festival'),
+    ('Holi', '2026-03-04', 'Festival of colours'),
+    ('Ugadi', '2026-03-19', 'Telugu and Kannada New Year'),
+    ('Eid al-Fitr', '2026-03-20', 'Islamic festival; confirm local date'),
+    ('Good Friday', '2026-04-03', 'Christian observance'),
+    ('Tamil New Year', '2026-04-14', 'Puthandu'),
+    ('May Day', '2026-05-01', 'Labour Day'),
+    ('Eid al-Adha', '2026-05-27', 'Islamic festival; confirm local date'),
+    ('Muharram', '2026-06-26', 'Islamic observance; confirm local date'),
+    ('Independence Day', '2026-08-15', 'National holiday'),
+    ('Milad-un-Nabi', '2026-08-26', 'Islamic observance; confirm local date'),
+    ('Krishna Janmashtami', '2026-09-04', 'Hindu festival'),
+    ('Ganesh Chaturthi', '2026-09-14', 'Hindu festival'),
+    ('Gandhi Jayanti', '2026-10-02', 'National holiday'),
+    ('Navaratri', '2026-10-11', 'Hindu festival'),
+    ('Ayudha Pooja', '2026-10-20', 'Tamil Nadu festival'),
+    ('Vijayadashami', '2026-10-21', 'Hindu festival'),
+    ('Deepavali', '2026-11-08', 'Festival of lights'),
+    ('Chhath Puja', '2026-11-15', 'Sun worship festival'),
+    ('Christmas', '2026-12-25', 'Christian festival')
+
+ON CONFLICT (holiday_date) DO NOTHING;
+
+-- 3. Display all inserted holidays
+
+SELECT
+    holiday_id,
+    holiday_name,
+    holiday_date,
+    description
+FROM public_holidays
+ORDER BY holiday_date;
